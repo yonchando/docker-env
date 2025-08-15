@@ -1,0 +1,18 @@
+global:
+    scrape_interval: 15s # By default, scrape targets every 15 seconds.
+
+scrape_configs:
+    -   job_name: 'prometheus'
+        scrape_interval: 5s
+        static_configs:
+            -   targets: [ 'prometheus:9090' ]
+                
+    -   job_name: 'jaeger'
+        scrape_interval: 5s
+        static_configs:
+            -   targets: [ 'jaeger:8888' ]
+                
+    -   job_name: 'admin-store'
+        scrape_interval: 5s
+        static_configs:
+            -   targets: [ 'admin-store:8000' ]

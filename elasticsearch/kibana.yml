@@ -1,0 +1,14 @@
+server:
+    host: 0.0.0.0
+    shutdownTimeout: '5s'
+
+elasticsearch:
+    hosts: ['http://elastic-search:9200']
+    username: 'kibana_system'
+xpack:
+    encryptedSavedObjects:
+        encryptionKey: ${SAVE_OBJECT_ENCRYPTION_KEY}
+    reporting:
+        encryptionKey: ${REPORTING_ENCRYPTION_KEY}
+    security:
+        encryptionKey: ${SECURITY_ENCRYPTION_KEY}
