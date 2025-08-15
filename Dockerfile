@@ -15,6 +15,12 @@ RUN groupadd -r $USER && useradd -ms /usr/bin/bash --no-log-init -r -g $USER $US
     mkdir -p /home/$USER && \
     echo "alias ll='ls -la'" >> /home/$USER/.bashrc && echo "alias c='clear'" >> /home/$USER/.bashrc
 
+COPY ./.docker/supervisor.conf /etc/supervisor/supervisord.conf
+COPY .docker/supervisor /etc/supervisor/conf.d
+COPY .docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY .docker/nginx.conf /etc/nginx/nginx.conf
+COPY .docker/php/conf.d "$PHP_INI_DIR/conf.d"
+
 # Set permission and change config
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
     mkdir -p /var/run/supervisor && \
@@ -26,12 +32,6 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
     /run/nginx \
     /var/lib/nginx \
     /var/log/nginx
-
-COPY ./.docker/supervisor.conf /etc/supervisor/supervisord.conf
-COPY .docker/supervisor /etc/supervisor/conf.d
-COPY .docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
-COPY .docker/nginx.conf /etc/nginx/nginx.conf
-COPY .docker/php/conf.d "$PHP_INI_DIR/conf.d"
 
 EXPOSE 8000
 
