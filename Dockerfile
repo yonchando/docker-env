@@ -27,6 +27,12 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
     /var/lib/nginx \
     /var/log/nginx
 
+COPY ./.docker/supervisor.conf /etc/supervisor/supervisord.conf
+COPY .docker/supervisor /etc/supervisor/conf.d
+COPY .docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY .docker/nginx.conf /etc/nginx/nginx.conf
+COPY .docker/php/conf.d "$PHP_INI_DIR/conf.d"
+
 EXPOSE 8000
 
 USER $USER:$USER
