@@ -33,7 +33,7 @@ extensions:
             
     jaeger_storage:
         backends:
-            elasticsearch_storage: &elasticsearch_config
+            elasticsearch_storage:
                 elasticsearch:
                     server_urls:
                         - http://elastic-search:9200
@@ -43,26 +43,6 @@ extensions:
                             password: "${env:ELASTIC_PASSWORD}"
                     indices:
                         index_prefix: "jaeger-main"
-                        spans:
-                            date_layout: "2006-01-02"
-                            rollover_frequency: "day"
-                            shards: 5
-                            replicas: 1
-                        services:
-                            date_layout: "2006-01-02"
-                            rollover_frequency: "day"
-                            shards: 5
-                            replicas: 1
-                        dependencies:
-                            date_layout: "2006-01-02"
-                            rollover_frequency: "day"
-                            shards: 5
-                            replicas: 1
-                        sampling:
-                            date_layout: "2006-01-02"
-                            rollover_frequency: "day"
-                            shards: 5
-                            replicas: 1
             elasticsearch_storage_archive:
                 elasticsearch:
                     server_urls:

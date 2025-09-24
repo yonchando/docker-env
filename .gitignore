@@ -1,2 +1,3 @@
 .idea
 .env
+elasticsearch/config/*.p12

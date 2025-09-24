@@ -13,6 +13,13 @@ exporters:
         endpoint: "http://jaeger:4318"
     otlphttp/prometheus:
         endpoint: "http://prometheus:9090"
+    elasticsearch:
+        endpoints: [ "http://localhost:9200" ]   # Elasticsearch endpoint
+        logs_index: "otel-logs-%{+yyyy.MM.dd}"       # daily index pattern
+        user: ${ELASTIC_USERNAME}                         # optional if security enabled
+        password: ${ELASTIC_PASSWORD}                    # optional if security enabled
+        tls:
+            insecure: false                        # disable TLS if using http
 
 extensions:
     health_check:
@@ -29,6 +36,10 @@ service:
             receivers: [ otlp ]
             processors: [ batch ]
             exporters: [ otlphttp/jaeger ]
+        logs:
+            receivers: [ otlp ]
+            processors: [ batch ]
+            exporters: [ elasticsearch ]
         metrics:
             receivers: [ otlp ]
             processors: [ batch ]
