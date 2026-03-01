@@ -1,3 +1,3 @@
 .idea
 .env
-elasticsearch/config/*.p12
+elastic-search/certs

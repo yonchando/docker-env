@@ -1,0 +1,44 @@
+receivers:
+    otlp:
+        protocols:
+            grpc:
+                endpoint: 0.0.0.0:4317
+            http:
+                endpoint: 0.0.0.0:4318
+processors:
+    batch:
+
+exporters:
+    otlphttp/jaeger:
+        endpoint: "http://jaeger:4318"
+    elasticsearch:
+        endpoints: ["http://es01:9200"] # Elasticsearch endpoint
+        logs_index: "otel-logs-%{+yyyy.MM.dd}" # daily index pattern
+        user: ${ELASTIC_USERNAME} # optional if security enabled
+        password: ${ELASTIC_PASSWORD} # optional if security enabled
+        tls:
+            insecure: false # disable TLS if using http
+            # /usr/share/otelcol-contrib/certs/
+            ca_file: "/usr/share/otelcol-contrib/certs/ca/ca.crt"
+            cert_file: "/usr/share/otelcol-contrib/certs/es01/es01.crt"
+            key_file: "/usr/share/otelcol-contrib/certs/es01/es01.key"
+
+extensions:
+    health_check:
+        endpoint: 0.0.0.0:13133
+    pprof:
+        endpoint: 0.0.0.0:1777
+    zpages:
+        endpoint: 0.0.0.0:55679
+
+service:
+    extensions: [health_check, pprof, zpages]
+    pipelines:
+        traces:
+            receivers: [otlp]
+            processors: [batch]
+            exporters: [otlphttp/jaeger]
+        logs:
+            receivers: [otlp]
+            processors: [batch]
+            exporters: [elasticsearch]
